@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import net.minecraftforge.common.MinecraftForge;
 
-public class SpiralGuidePanel extends JPanel {
+public class SpiralGuidePanel extends GuidePanel {
   
   public static final int GUI_SPACING = 5;
   
@@ -45,27 +45,15 @@ public class SpiralGuidePanel extends JPanel {
   public SpiralGuidePanel() {
     mode = Mode.xaxis;
     
-    xlab = new JLabel("X:");
-    ylab = new JLabel("Y:");
-    zlab = new JLabel("Z:");
     sizelab = new JLabel("Outer Radius:");
     insizelab = new JLabel("Inner Radius:");
     turnslab = new JLabel("Radians:");
     
-    xent = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    yent = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    zent = new JFormattedTextField(NumberFormat.getIntegerInstance());
     sizeent = new JFormattedTextField(NumberFormat.getIntegerInstance());
     insizeent = new JFormattedTextField(NumberFormat.getIntegerInstance());
     turnsent = new JFormattedTextField(NumberFormat.getNumberInstance());
     
     Dimension size = new Dimension(50, 0);
-    xent.setMinimumSize(size);
-    xent.setPreferredSize(size);
-    yent.setMinimumSize(size);
-    yent.setPreferredSize(size);
-    zent.setMinimumSize(size);
-    zent.setPreferredSize(size);
     sizeent.setMinimumSize(size);
     sizeent.setPreferredSize(size);
     insizeent.setMinimumSize(size);
@@ -90,37 +78,8 @@ public class SpiralGuidePanel extends JPanel {
   }
   
   private void setupPanel() {
-    //create the origin input fields
-    Box left = Box.createVerticalBox();
-    Box right = Box.createVerticalBox();
-    
-    left.add(xlab);
-    right.add(xent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    left.add(ylab);
-    right.add(yent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    left.add(zlab);
-    right.add(zent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    Box orig = Box.createHorizontalBox();
-    orig.add(left);
-    orig.add(Box.createHorizontalStrut(GUI_SPACING));
-    orig.add(right);
-    orig.add(Box.createVerticalGlue());
-    orig.setBorder(new TitledBorder("Origin"));
-    
-    orig.setAlignmentX(LEFT_ALIGNMENT);
-    add(orig);
-    
     //create the field specific for the spiral
-    orig = Box.createVerticalBox();
+    Box orig = Box.createVerticalBox();
     Box temp = Box.createHorizontalBox();
     
     temp.add(sizelab);
@@ -240,9 +199,9 @@ public class SpiralGuidePanel extends JPanel {
     Set<Point> pts = genSpiral();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + .5, y + pt.y + .5, z + pt.x + .5));
@@ -255,9 +214,9 @@ public class SpiralGuidePanel extends JPanel {
     Set<Point> pts = genSpiral();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + pt.x + .5, y + .5, z + pt.y + .5));
@@ -270,9 +229,9 @@ public class SpiralGuidePanel extends JPanel {
     Set<Point> pts = genSpiral();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + pt.x + .5, y + pt.y + .5, z + .5));
@@ -299,7 +258,6 @@ public class SpiralGuidePanel extends JPanel {
       
       Point p = new Point((int) (x * cursize), (int) (y * cursize));
       output.add(p);
-      System.out.println(p);
       
       float t = x;
       x = x * xhelper - y * yhelper;
@@ -309,16 +267,10 @@ public class SpiralGuidePanel extends JPanel {
     return output;
   }
   
-  private final JLabel xlab;
-  private final JLabel ylab;
-  private final JLabel zlab;
   private final JLabel sizelab;
   private final JLabel insizelab;
   private final JLabel turnslab;
   
-  private final JFormattedTextField xent;
-  private final JFormattedTextField yent;
-  private final JFormattedTextField zent;
   private final JFormattedTextField sizeent;
   private final JFormattedTextField insizeent;
   private final JFormattedTextField turnsent;

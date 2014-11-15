@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import net.minecraftforge.common.MinecraftForge;
 
-public class CircleGuidePanel extends JPanel {
+public class CircleGuidePanel extends GuidePanel {
   
   public static final int GUI_SPACING = 5;
   
@@ -41,23 +41,9 @@ public class CircleGuidePanel extends JPanel {
   public CircleGuidePanel() {
     mode = Mode.xaxis;
     
-    xlab = new JLabel("X:");
-    ylab = new JLabel("Y:");
-    zlab = new JLabel("Z:");
     sizelab = new JLabel("Radius:");
     
-    xent = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    yent = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    zent = new JFormattedTextField(NumberFormat.getIntegerInstance());
     sizeent = new JFormattedTextField(NumberFormat.getIntegerInstance());
-    
-    Dimension size = new Dimension(50, 0);
-    xent.setMinimumSize(size);
-    xent.setPreferredSize(size);
-    yent.setMinimumSize(size);
-    yent.setPreferredSize(size);
-    zent.setMinimumSize(size);
-    zent.setPreferredSize(size);
     
     modebutton = new JButton("X-axis");
     remove = new JButton("Delete");
@@ -75,38 +61,9 @@ public class CircleGuidePanel extends JPanel {
     MinecraftForge.EVENT_BUS.register(marker);
   }
   
-  private void setupPanel() {
-    //create the origin input fields
-    Box left = Box.createVerticalBox();
-    Box right = Box.createVerticalBox();
-    
-    left.add(xlab);
-    right.add(xent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    left.add(ylab);
-    right.add(yent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    left.add(zlab);
-    right.add(zent);
-    left.add(Box.createVerticalStrut(GUI_SPACING));
-    right.add(Box.createVerticalStrut(GUI_SPACING));
-    
-    Box orig = Box.createHorizontalBox();
-    orig.add(left);
-    orig.add(Box.createHorizontalStrut(GUI_SPACING));
-    orig.add(right);
-    orig.add(Box.createVerticalGlue());
-    orig.setBorder(new TitledBorder("Origin"));
-    
-    orig.setAlignmentX(LEFT_ALIGNMENT);
-    add(orig);
-    
+  private void setupPanel() { 
     //create the field specific for the circles
-    orig = Box.createVerticalBox();
+    Box orig = Box.createVerticalBox();
     Box temp = Box.createHorizontalBox();
     
     temp.add(sizelab);
@@ -222,9 +179,9 @@ public class CircleGuidePanel extends JPanel {
     Set<Point> pts = genCircle();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + .5, y + pt.y + .5, z + pt.x + .5));
@@ -237,9 +194,9 @@ public class CircleGuidePanel extends JPanel {
     Set<Point> pts = genCircle();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + pt.x + .5, y + .5, z + pt.y + .5));
@@ -252,9 +209,9 @@ public class CircleGuidePanel extends JPanel {
     Set<Point> pts = genCircle();
     Collection<Point3D> output = new ArrayList<Point3D>(pts.size());
     
-    int x = ((Number) xent.getValue()).intValue();
-    int y = ((Number) yent.getValue()).intValue();
-    int z = ((Number) zent.getValue()).intValue();
+    int x = getOriginX();
+    int y = getOriginY();
+    int z = getOriginZ();
     
     for(Point pt : pts) {
       output.add(new Point3D(x + pt.x + .5, y + pt.y + .5, z + .5));
@@ -275,7 +232,6 @@ public class CircleGuidePanel extends JPanel {
     for(float angle = 0; angle < 2 * Math.PI; angle += 1 / size) {
       Point p = new Point((int) (x * size), (int) (y * size));
       output.add(p);
-      System.out.println(p);
       
       float t = x;
       x = x * xhelper - y * yhelper;
@@ -285,14 +241,8 @@ public class CircleGuidePanel extends JPanel {
     return output;
   }
   
-  private final JLabel xlab;
-  private final JLabel ylab;
-  private final JLabel zlab;
   private final JLabel sizelab;
-  
-  private final JFormattedTextField xent;
-  private final JFormattedTextField yent;
-  private final JFormattedTextField zent;
+   
   private final JFormattedTextField sizeent;
   
   private final JButton modebutton;
