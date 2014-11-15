@@ -1,0 +1,11 @@
+[
+{
+    "modid" : "Introspector",
+    "name" : "Introspector",
+    "description" : "Peeking into the minecraft.",
+    "authorList" : ["arcbe"],
+    "dependencies" : [],
+    "version" : "0.0.1",
+    "mcversion" : "1.7.10"
+}
+]
