@@ -187,8 +187,8 @@ public class SpiralGuidePanel extends JPanel {
       public void actionPerformed(ActionEvent e) {
         switch(mode) {
           case xaxis: genXCirc(); return;
-          case yaxis: genXCirc(); return;
-          case zaxis: genXCirc();
+          case yaxis: genYCirc(); return;
+          case zaxis: genZCirc();
         }
       }
     });

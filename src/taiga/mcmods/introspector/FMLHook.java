@@ -22,7 +22,7 @@ public class FMLHook extends JFrame {
   public static FMLHook instance;
 
   public FMLHook() throws HeadlessException {
-    super("Introspector");
+    super("BuildingGuide");
   }
   
   @EventHandler
